@@ -1,0 +1,174 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7.1 (swiftlang-5.7.1.135.3 clang-1400.0.29.51)
+// swift-module-flags: -target arm64-apple-ios14.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name VirtualCardFramework
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Combine
+import Foundation
+import MBProgressHUD
+import Swift
+import UIKit
+@_exported import VirtualCardFramework
+import _Concurrency
+import _StringProcessing
+@_hasMissingDesignatedInitializers public class QRCodeViewModel {
+  @objc deinit
+}
+public protocol UIAnimatable : UIKit.UIViewController {
+  func showLoadingAnimation()
+  func hideLoadingAnimation()
+}
+extension VirtualCardFramework.UIAnimatable {
+  public func showLoadingAnimation()
+  public func hideLoadingAnimation()
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class HomeController : UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) public var viewControllerResultDelegate: VirtualCardFramework.ViewControllerResultDelegate?
+  @_Concurrency.MainActor(unsafe) public var controllerTag: Swift.String?
+  @_Concurrency.MainActor(unsafe) public static let REQUEST_CODE_QR_BUILDING: Swift.String
+  @objc @IBOutlet @_Concurrency.MainActor(unsafe) weak public var qrCodeView: UIKit.UIStackView!
+  @objc @IBOutlet @_Concurrency.MainActor(unsafe) weak public var stidCardView: UIKit.UIStackView!
+  @_Concurrency.MainActor(unsafe) @objc dynamic public init()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) public func setCardValue(name: Swift.String, nik: Swift.String)
+  @objc deinit
+}
+extension VirtualCardFramework.HomeController : VirtualCardFramework.ViewControllerResultDelegate {
+  @_Concurrency.MainActor(unsafe) public func onViewCountrollerResult(controllerTag: Swift.String, resultCode: Swift.Int, data: [Swift.String : Any])
+}
+public struct ViewControllerResult {
+  public static let RESULT_OK: Swift.Int
+  public static let RESULT_CANCELLED: Swift.Int
+  public static let RESULT_BACK: Swift.Int
+  public static let RESULT_QR_CODE: Swift.Int
+}
+public protocol ViewControllerResultDelegate {
+  func onViewCountrollerResult(controllerTag: Swift.String, resultCode: Swift.Int, data: [Swift.String : Any])
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class ApiClient : ObjectiveC.NSObject {
+  public static let instance: VirtualCardFramework.ApiClient
+  public func requestHttpForm<T>(path: Swift.String, method: VirtualCardFramework.HTTPMethod, parameters: [Swift.String : Any]? = nil) -> Combine.AnyPublisher<T, VirtualCardFramework.APIError> where T : Swift.Decodable, T : Swift.Encodable
+  public func requestHttp<T>(path: Swift.String, method: VirtualCardFramework.HTTPMethod, parameters: [Swift.String : Any]? = nil) -> Combine.AnyPublisher<T, VirtualCardFramework.APIError> where T : Swift.Decodable, T : Swift.Encodable
+  public func requestHttpVms<T>(path: Swift.String, method: VirtualCardFramework.HTTPMethod, parameters: [Swift.String : Any]? = nil) -> Combine.AnyPublisher<T, VirtualCardFramework.APIError> where T : Swift.Decodable, T : Swift.Encodable
+  @objc deinit
+}
+extension VirtualCardFramework.ApiClient : Foundation.URLSessionDelegate {
+  @objc dynamic public func urlSession(_ session: Foundation.URLSession, didReceive challenge: Foundation.URLAuthenticationChallenge, completionHandler: @escaping (Foundation.URLSession.AuthChallengeDisposition, Foundation.URLCredential?) -> Swift.Void)
+}
+public protocol VirtualCardServiceProtocol {
+  func getUUID(with email: Swift.String) -> Combine.AnyPublisher<VirtualCardFramework.VcardUUID, VirtualCardFramework.APIError>
+  func revokeVcard(with email: Swift.String, siteId: Swift.String) -> Combine.AnyPublisher<VirtualCardFramework.VcardRevoke, VirtualCardFramework.APIError>
+  func addVcard(vCardAddRequest: VirtualCardFramework.VcardAddRequest) -> Combine.AnyPublisher<VirtualCardFramework.VcardAdd, VirtualCardFramework.APIError>
+}
+public struct VirtualCardService : VirtualCardFramework.VirtualCardServiceProtocol {
+  public init()
+  public func addVcard(vCardAddRequest: VirtualCardFramework.VcardAddRequest) -> Combine.AnyPublisher<VirtualCardFramework.VcardAdd, VirtualCardFramework.APIError>
+  public func revokeVcard(with email: Swift.String, siteId: Swift.String) -> Combine.AnyPublisher<VirtualCardFramework.VcardRevoke, VirtualCardFramework.APIError>
+  public func getUUID(with email: Swift.String) -> Combine.AnyPublisher<VirtualCardFramework.VcardUUID, VirtualCardFramework.APIError>
+}
+public struct ApiContract {
+  public static let BASE_URL: Swift.String
+  public static let VMS_URL: Swift.String
+  public static let UUID: Swift.String
+  public static let REVOKE: Swift.String
+  public static let ADD: Swift.String
+  public static let ENCRYPTED_CSN: Swift.String
+}
+public struct RequestError {
+}
+public enum APIError : Foundation.LocalizedError {
+  case invalidRequest
+  case badRequest(_: Swift.Int)
+  case unauthorized(_: Swift.Int)
+  case forbidden(_: Swift.Int)
+  case notFound(_: Swift.Int)
+  case error4xx(_: Swift.Int)
+  case serverError(_: Swift.Int)
+  case error5xx(_: Swift.Int)
+  case decodingError
+  case urlSessionFailed(_: Foundation.URLError)
+  case unknownError
+  public func value() -> VirtualCardFramework.RequestError
+}
+public struct DefaultKeys {
+  public static let email: Swift.String
+  public static let phoneNumber: Swift.String
+  public static let name: Swift.String
+  public static let nik: Swift.String
+}
+public struct QRCodeCSN : Swift.Codable {
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct AccessToken : Swift.Codable {
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct VcardUUID : Swift.Codable {
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct VcardRevoke : Swift.Codable {
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct RevokeResponse : Swift.Codable {
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct VcardAdd : Swift.Codable {
+  public enum CodingKeys : Swift.String, Swift.CodingKey {
+    case virtualCardId
+    case message
+    public init?(rawValue: Swift.String)
+    public init?(stringValue: Swift.String)
+    public init?(intValue: Swift.Int)
+    public typealias RawValue = Swift.String
+    public var intValue: Swift.Int? {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+    public var stringValue: Swift.String {
+      get
+    }
+  }
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct VcardAddRequest {
+}
+public protocol QRCodeServiceProtocol {
+  func getEncryptedCsn(nik: Swift.String) -> Combine.AnyPublisher<VirtualCardFramework.QRCodeCSN, VirtualCardFramework.APIError>
+}
+public struct QRCodeService : VirtualCardFramework.QRCodeServiceProtocol {
+  public func getEncryptedCsn(nik: Swift.String) -> Combine.AnyPublisher<VirtualCardFramework.QRCodeCSN, VirtualCardFramework.APIError>
+}
+public enum HTTPMethod : Swift.String {
+  case get
+  case post
+  case delete
+  case patch
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class QRCodeController : UIKit.UIViewController, VirtualCardFramework.UIAnimatable {
+  @objc @IBOutlet @_Concurrency.MainActor(unsafe) weak public var qrImage: UIKit.UIImageView!
+  @objc @IBOutlet @_Concurrency.MainActor(unsafe) weak public var nameLabel: UIKit.UILabel!
+  @objc @IBOutlet @_Concurrency.MainActor(unsafe) weak public var qrView: UIKit.UIStackView!
+  @objc @IBOutlet @_Concurrency.MainActor(unsafe) weak public var closeButton: UIKit.UIButton!
+  @_Concurrency.MainActor(unsafe) public var viewControllerResultDelegate: VirtualCardFramework.ViewControllerResultDelegate?
+  @_Concurrency.MainActor(unsafe) public var controllerTag: Swift.String?
+  @_Concurrency.MainActor(unsafe) @objc dynamic public init()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
+  @objc deinit
+}
+extension VirtualCardFramework.VcardAdd.CodingKeys : Swift.Equatable {}
+extension VirtualCardFramework.VcardAdd.CodingKeys : Swift.Hashable {}
+extension VirtualCardFramework.VcardAdd.CodingKeys : Swift.RawRepresentable {}
+extension VirtualCardFramework.HTTPMethod : Swift.Equatable {}
+extension VirtualCardFramework.HTTPMethod : Swift.Hashable {}
+extension VirtualCardFramework.HTTPMethod : Swift.RawRepresentable {}
