@@ -1,0 +1,11 @@
+framework module VirtualCardFramework {
+  umbrella header "VirtualCardFramework.h"
+
+  export *
+  module * { export * }
+}
+
+module VirtualCardFramework.Swift {
+  header "VirtualCardFramework-Swift.h"
+  requires objc
+}
